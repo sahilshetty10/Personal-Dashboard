@@ -1,0 +1,24 @@
+import Link from "next/link";
+import React from "react";
+
+const Navbar = () => {
+  return (
+    <header className="px-8 xl:px-16 pt-4">
+      <nav className="flex items-center justify-between font-bold border px-8 h-20 rounded-xl">
+        <Link href="/">
+          <h1 className="cursor-pointer text-3xl">DashboardZen</h1>
+        </Link>
+        <ul className="flex gap-8">
+          <Link href="/">
+            <li className="cursor-pointer hidden xl:block">Home</li>
+          </Link>
+          <Link href="/configure">
+            <li className="cursor-pointer">Configure</li>
+          </Link>
+        </ul>
+      </nav>
+    </header>
+  );
+};
+
+export default Navbar;
