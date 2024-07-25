@@ -27,7 +27,6 @@ const ConfigStock = () => {
     );
     let data = await response.json();
     let symbols = data.map((item: any) => item.id);
-    console.log(symbols);
     setSymbols(symbols);
   };
 
@@ -37,17 +36,17 @@ const ConfigStock = () => {
 
   return (
     <>
-      <Card>
+      <Card className="row-span-2">
         <CardHeader>
           <CardTitle>Stock Configuration</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <CardDescription className="text-lg">Symbol 1</CardDescription>
-          <Input list="symbols" placeholder="Search symbol..." />
+          <Input list="symbols" placeholder="Search symbol..." id="symbol-1" />
           <CardDescription className="text-lg">Symbol 2</CardDescription>
-          <Input list="symbols" placeholder="Search symbol..." />
+          <Input list="symbols" placeholder="Search symbol..." id="symbol-2" />
           <CardDescription className="text-lg">Symbol 3</CardDescription>
-          <Input list="symbols" placeholder="Search symbol..." />
+          <Input list="symbols" placeholder="Search symbol..." id="symbol-3" />
           <datalist id="symbols">
             {symbols.map((symbol, index) => (
               <option key={index} value={symbol} />

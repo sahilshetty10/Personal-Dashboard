@@ -40,7 +40,7 @@ const ConfigHoliday = () => {
           <CardDescription className="text-lg">Country</CardDescription>
           <Select>
             <SelectTrigger>
-              <SelectValue>Country</SelectValue>
+              <SelectValue placeholder="CA" id="holiday-country"></SelectValue>
             </SelectTrigger>
             <SelectContent>
               {holidaysCountriesList.map((country, index) => (

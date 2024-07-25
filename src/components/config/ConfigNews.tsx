@@ -82,19 +82,22 @@ const ConfigNews = () => {
   ];
   return (
     <>
-      <Card>
+      <Card className="row-span-2 h-fit">
         <CardHeader>
           <CardTitle>News Configuration</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <CardDescription className="text-lg">Category</CardDescription>
           <Select>
-            <SelectTrigger>
-              <SelectValue>Business</SelectValue>
+            <SelectTrigger className="capitalize">
+              <SelectValue
+                placeholder="Business"
+                id="news-category"
+              ></SelectValue>
             </SelectTrigger>
             <SelectContent>
               {newsCategories.map((category, index) => (
-                <SelectItem key={index} value={category}>
+                <SelectItem key={index} value={category} className="capitalize">
                   {category}
                 </SelectItem>
               ))}
@@ -102,12 +105,12 @@ const ConfigNews = () => {
           </Select>
           <CardDescription className="text-lg">Country</CardDescription>
           <Select>
-            <SelectTrigger>
-              <SelectValue>United States</SelectValue>
+            <SelectTrigger className="uppercase">
+              <SelectValue placeholder="ca" id="news-country"></SelectValue>
             </SelectTrigger>
             <SelectContent>
               {countryCodes.map((country, index) => (
-                <SelectItem key={index} value={country}>
+                <SelectItem key={index} value={country} className="uppercase">
                   {country}
                 </SelectItem>
               ))}
