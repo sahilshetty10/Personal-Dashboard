@@ -4,8 +4,10 @@ import ConfigStock from "@/components/config/ConfigStock";
 import ConfigWeather from "@/components/config/ConfigWeather";
 import Navbar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const configure = () => {
+  const { toast } = useToast();
   const saveChanges = () => {
     // save changes to database
     const stock1 = document.getElementById("symbol-1") as HTMLInputElement;
@@ -22,6 +24,28 @@ const configure = () => {
     console.log(newsCategory, newsCountry);
     console.log(holidayCountry);
     console.log(weatherLocation?.value);
+
+    // fetch request to save data
+    const preferences = {
+      stock1: stock1?.value,
+      stock2: stock2?.value,
+      stock3: stock3?.value,
+      newsCategory: newsCategory,
+      newsCountry: newsCountry,
+      holidayCountry: holidayCountry,
+      weatherLocation: weatherLocation?.value,
+    };
+    fetch("http://localhost:8080/updateUserPreferences", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: localStorage.getItem("userId"),
+        preferences: preferences,
+      }),
+    });
+    toast({ title: "Changes Saved" });
   };
   return (
     <>

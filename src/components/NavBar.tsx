@@ -15,6 +15,15 @@ const Navbar = () => {
           <Link href="/configure">
             <li className="cursor-pointer">Configure</li>
           </Link>
+          <li
+            className="cursor-pointer"
+            onClick={() => {
+              localStorage.removeItem("userId");
+              window.location.href = "/login";
+            }}
+          >
+            Logout
+          </li>
         </ul>
       </nav>
     </header>

@@ -33,15 +33,30 @@ const login = () => {
   });
 
   // submit function
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // check if username and password are in firebase db and set cookie "userId"
+    const username = values.username;
+    const password = values.password;
 
-    // Throw error
-    form.setError("username", {
-      type: "manual",
-      message: "Username or password is incorrect",
-    });
+    // Check if username and password are correct wiith backend at 8080
+    try {
+      const response = await fetch("http://localhost:8080/authenticateUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      localStorage.setItem("userId", data.userId);
+      window.location.href = "http://localhost:3000/";
+    } catch (e) {
+      // Throw error
+      form.setError("username", {
+        type: "manual",
+        message: "Username or password is incorrect",
+      });
+    }
   }
 
   return (

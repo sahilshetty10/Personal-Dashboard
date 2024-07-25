@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { z } from "zod";
+import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -25,42 +25,13 @@ import { useState, useEffect, useRef } from "react";
 const ChatBox = () => {
   const [messages, setMessages] = useState([
     { user: false, text: "Hi! I'm your AI assistant. How can I assist you?" },
-    { user: true, text: "I need help with my account" },
-    {
-      user: false,
-      text: "Sure, I can help you with that. Please provide me with your account number.",
-    },
-    // { user: false, text: "Hi! I'm your AI assistant. How can I assist you?" },
-    // { user: true, text: "I need help with my account" },
-    // {
-    //   user: false,
-    //   text: "Sure, I can help you with that. Please provide me with your account number.",
-    // },
-    // { user: false, text: "Hi! I'm your AI assistant. How can I assist you?" },
-    // { user: true, text: "I need help with my account" },
-    // {
-    //   user: false,
-    //   text: "Sure, I can help you with that. Please provide me with your account number.",
-    // },
-    // { user: false, text: "Hi! I'm your AI assistant. How can I assist you?" },
-    // { user: true, text: "I need help with my account" },
-    // {
-    //   user: false,
-    //   text: "Sure, I can help you with that. Please provide me with your account number.",
-    // },
-    // { user: false, text: "Hi! I'm your AI assistant. How can I assist you?" },
-    // { user: true, text: "I need help with my account" },
-    // {
-    //   user: false,
-    //   text: "Sure, I can help you with that. Please provide me with your account number.",
-    // },
-    // { user: false, text: "Hi! I'm your AI assistant. How can I assist you?" },
-    // { user: true, text: "I need help with my account" },
-    // {
-    //   user: false,
-    //   text: "Sure, I can help you with that. Please provide me with your account number.",
-    // },
   ]);
+
+  const generateAnswer = async (message: string) => {
+    const ai = await window.ai.createTextSession();
+    const response = await ai.prompt(message);
+    return response;
+  };
 
   // scroll to bottom of chat
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -79,13 +50,19 @@ const ChatBox = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setMessages([...messages, { user: true, text: values.message }]);
     form.reset();
+    const response = await generateAnswer(values.message);
+    setMessages([
+      ...messages,
+      { user: true, text: values.message },
+      { user: false, text: response },
+    ]);
   };
   return (
     <section className="col-span-2 row-span-3 h-full">
-      <Card className="h-full flex flex-col justify-between">
+      <Card className="h-full flex flex-col gap-4 justify-between overflow-auto">
         <CardHeader>
           <CardTitle>Chat</CardTitle>
         </CardHeader>

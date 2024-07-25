@@ -43,15 +43,29 @@ const login = () => {
   });
 
   // submit function
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    // check if username and password are in firebase db and set cookie "userId"
+    const username = values.username;
+    const password = values.password;
 
-    // Throw error
-    form.setError("username", {
-      type: "manual",
-      message: "Username or password is incorrect",
-    });
+    try {
+      const response = await fetch("http://localhost:8080/addUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      localStorage.setItem("userId", data.userId);
+      window.location.href = "/";
+    } catch (e) {
+      // Throw error
+      form.setError("username", {
+        type: "manual",
+        message: "Username or password is incorrect",
+      });
+    }
   }
 
   return (

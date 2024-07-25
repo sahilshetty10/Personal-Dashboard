@@ -8,14 +8,9 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-const news = () => {
+const news = ({ data }: any) => {
   // data with symbol price and change in price
-  let data = [
-    { title: "title", description: "description", url: "url" },
-    { title: "title", description: "description", url: "url" },
-    { title: "title", description: "description", url: "url" },
-    { title: "title", description: "description", url: "url" },
-  ];
+  const articles = data.articles;
   return (
     <>
       <section className="col-span-2 row-span-5">
@@ -24,14 +19,14 @@ const news = () => {
             <CardTitle>News</CardTitle>
           </CardHeader>
           <CardContent className="h-full overflow-auto gap-4">
-            {data.map((news, index) => (
-              <Link href={news.url} key={index}>
+            {articles.map((article: any, index: any) => (
+              <Link href={article.url} key={index}>
                 <Card className="border-x-0">
                   <CardHeader>
-                    <CardTitle>{news.title}</CardTitle>
+                    <CardTitle>{article.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription>{news.description}</CardDescription>
+                    <CardDescription>{article.description}</CardDescription>
                   </CardContent>
                 </Card>
               </Link>
