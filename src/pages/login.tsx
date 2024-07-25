@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Navbar from "@/components/NavBar";
 
 const login = () => {
   // form schema
@@ -61,11 +62,12 @@ const login = () => {
 
   return (
     <>
-      <main className="w-1/2 m-auto h-screen flex items-center justify-center flex-col">
+      <Navbar />
+      <main className="w-1/2 m-auto h-[90vh] flex items-center justify-center flex-col">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 w-1/2"
+            className="space-y-8 w-1/2 bg-background p-8"
           >
             <FormField
               control={form.control}
