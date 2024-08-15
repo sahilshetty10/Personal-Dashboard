@@ -4,8 +4,17 @@ import ConfigStock from "@/components/config/ConfigStock";
 import ConfigWeather from "@/components/config/ConfigWeather";
 import Navbar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { useEffect } from "react";
 
 const configure = () => {
+  const { toast } = useToast();
+  useEffect(() => {
+    const username = localStorage.getItem("userId")!;
+    if (!username) {
+      window.location.href = "/login";
+    }
+  }, []);
   const saveChanges = () => {
     // save changes to database
     const stock1 = document.getElementById("symbol-1") as HTMLInputElement;
@@ -22,12 +31,34 @@ const configure = () => {
     console.log(newsCategory, newsCountry);
     console.log(holidayCountry);
     console.log(weatherLocation?.value);
+
+    // fetch request to save data
+    const preferences = {
+      stock1: stock1?.value,
+      stock2: stock2?.value,
+      stock3: stock3?.value,
+      newsCategory: newsCategory,
+      newsCountry: newsCountry,
+      holidayCountry: holidayCountry,
+      weatherLocation: weatherLocation?.value,
+    };
+    fetch("http://localhost:8080/updateUserPreferences", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: localStorage.getItem("userId"),
+        preferences: preferences,
+      }),
+    });
+    toast({ title: "Changes Saved" });
   };
   return (
     <>
       <Navbar />
-      <main className="p-8 xl:p-16 border m-8 xl:m-16 grid grid-cols-3 gap-8 grid-rows-3">
-        <h1 className="col-span-3 text-6xl text-center">
+      <main className="px-8 xl:px-16 border m-8 xl:m-16 grid grid-cols-3 gap-8 grid-rows-3 bg-background py-8">
+        <h1 className="bg-background col-span-3 text-6xl flex justify-center items-center">
           Customize Your Dashboard
         </h1>
         <ConfigStock />

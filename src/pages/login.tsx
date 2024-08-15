@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Navbar from "@/components/NavBar";
 
 const login = () => {
   // form schema
@@ -33,24 +34,40 @@ const login = () => {
   });
 
   // submit function
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // check if username and password are in firebase db and set cookie "userId"
+    const username = values.username;
+    const password = values.password;
 
-    // Throw error
-    form.setError("username", {
-      type: "manual",
-      message: "Username or password is incorrect",
-    });
+    // Check if username and password are correct wiith backend at 8080
+    try {
+      const response = await fetch("http://localhost:8080/authenticateUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      localStorage.setItem("userId", data.userId);
+      window.location.href = "http://localhost:3000/";
+    } catch (e) {
+      // Throw error
+      form.setError("username", {
+        type: "manual",
+        message: "Username or password is incorrect",
+      });
+    }
   }
 
   return (
     <>
-      <main className="w-1/2 m-auto h-screen flex items-center justify-center flex-col">
+      <Navbar />
+      <main className="w-1/2 m-auto h-[90vh] flex items-center justify-center flex-col">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 w-1/2"
+            className="space-y-8 w-1/2 bg-background p-8"
           >
             <FormField
               control={form.control}
