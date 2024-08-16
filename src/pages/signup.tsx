@@ -1,68 +1,103 @@
-// login page for the app
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { app } from "../firebase";
 import {
   Form,
   FormControl,
-  FormDescription,
-  FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  FormField,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/NavBar";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
+const Signup = () => {
+  const router = useRouter();
+  const [image, setImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
-const login = () => {
-  // form schema
   const formSchema = z
     .object({
-      username: z.string().min(2).max(50),
+      name: z.string().min(2, { message: "Name is too short" }).max(50),
+      email: z.string().email({ message: "Invalid email address" }),
       password: z
         .string()
-        .min(8, { message: "Password must be more than 8 characters" })
-        .max(100),
+        .min(8, { message: "Password must be more than 8 characters" }),
       confirmPassword: z
         .string()
-        .min(8, { message: "Password must be more than 8 characters" })
-        .max(100),
+        .min(8, { message: "Password must be more than 8 characters" }),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords must match",
       path: ["confirmPassword"],
     });
-  // defining the form
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      name: "",
+      email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  // submit function
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    const username = values.username;
-    const password = values.password;
-
-    try {
-      await createUserWithEmailAndPassword(getAuth(app), username, password);
-      // localStorage.setItem("userId", data.userId);
-      window.location.href = "/";
-    } catch (e ) {
-      // Throw error
-      form.setError("username", {
-        type: "manual",
-        message: (e as any).message,
-      });
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
     }
+  };
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!image) {
+      form.setError("name", {
+        type: "manual",
+        message: "Please upload an image",
+      });
+      return;
+    }
+
+    setLoading(true); // Start loading
+
+    const { name, email, password } = values;
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64Image = reader.result?.toString().split(",")[1]; // Get base64 part
+      try {
+        const response = await fetch("/api/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, email, password, image: base64Image }),
+        });
+
+        if (response.ok) {
+          router.push("/");
+        } else {
+          const error = await response.json();
+          form.setError("email", {
+            type: "manual",
+            message: error.message,
+          });
+        }
+      } catch (error: any) {
+        form.setError("email", {
+          type: "manual",
+          message: error.message,
+        });
+      } finally {
+        setLoading(false); // End loading
+      }
+    };
+
+    reader.readAsDataURL(image);
   }
 
   return (
@@ -76,12 +111,25 @@ const login = () => {
           >
             <FormField
               control={form.control}
-              name="username"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter Username" {...field} />
+                    <Input placeholder="Enter your name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,7 +144,7 @@ const login = () => {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Enter Password"
+                      placeholder="Enter your password"
                       {...field}
                     />
                   </FormControl>
@@ -113,7 +161,7 @@ const login = () => {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Confirm Password"
+                      placeholder="Confirm your password"
                       {...field}
                     />
                   </FormControl>
@@ -121,7 +169,22 @@ const login = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+
+            <FormItem>
+              <FormLabel>Profile Image</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+
+            <Button type="submit" disabled={loading}>
+              {loading ? "Signing Up..." : "Sign Up"}
+            </Button>
             <p>
               Already have an account?{" "}
               <a href="/login" className="text-blue-600">
@@ -135,4 +198,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Signup;

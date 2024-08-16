@@ -1,4 +1,3 @@
-// login page for the app
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -6,65 +5,69 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
-  FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  FormField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/NavBar";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../firebase";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
+const Login = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-const login = () => {
-  // form schema
   const formSchema = z.object({
-    username: z.string().min(2).max(50),
+    email: z.string().email({ message: "Invalid email address" }),
     password: z
       .string()
-      .min(8, { message: "Password must be more than 8 characters" })
-      .max(100),
+      .min(8, { message: "Password must be more than 8 characters" }),
   });
-  // defining the form
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
-  // submit function
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // check if username and password are in firebase db and set cookie "userId"
-    const username = values.username;
-    const password = values.password;
+    setLoading(true); // Start loading
 
-    // Check if username and password are correct wiith backend at 8080
+    const { email, password } = values;
+
     try {
-      const credential = await signInWithEmailAndPassword(
-        getAuth(app),
-        username,
-        password
-      );
-      const idToken = await credential.user.getIdToken();
-      // localStorage.setItem("userId", data.userId);
-      window.location.href = "/";
-    } catch (e) {
-      // Throw error
-      form.setError("username", {
-        type: "manual",
-        message: (e as any).message,
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
+
+      if (response.ok) {
+        router.push("/"); // Redirect to home on success
+      } else {
+        const data = await response.json();
+        form.setError("email", { type: "manual", message: data.message });
+      }
+    } catch (error: any) {
+      form.setError("email", {
+        type: "manual",
+        message: error.message || "An unexpected error occurred",
+      });
+    } finally {
+      setLoading(false); // End loading
     }
   }
 
   return (
     <>
       <Navbar />
-      <main className="w-1/2 m-auto h-[90vh] flex items-center justify-center flex-col">
+      <main className="w-1/2 m-auto h-[90vh] flex items-center justify-center">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -72,12 +75,12 @@ const login = () => {
           >
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter Username" {...field} />
+                    <Input placeholder="Enter your email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,7 +95,7 @@ const login = () => {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Enter Password"
+                      placeholder="Enter your password"
                       {...field}
                     />
                   </FormControl>
@@ -100,11 +103,13 @@ const login = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </Button>
             <p>
               Don't have an account?{" "}
               <a href="/signup" className="text-blue-600">
-                Sign-up
+                Sign up
               </a>
             </p>
           </form>
@@ -114,4 +119,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
