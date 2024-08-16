@@ -13,15 +13,22 @@ const sessionOptions = {
   },
 };
 
-export default async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
-  const session:any = await getIronSession(req, res, sessionOptions);
+export default async function loginHandler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const session: any = await getIronSession(req, res, sessionOptions);
 
   if (req.method === "POST") {
     const { email, password } = req.body;
 
     try {
       // Sign in with Firebase
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
 
       // Get user data from Firestore
@@ -36,12 +43,13 @@ export default async function loginHandler(req: NextApiRequest, res: NextApiResp
         uid: user.uid,
         email: user.email,
         name: userData?.name,
+        profileImage: userData?.profileImage,
         preferences: userData?.preferences || {},
       };
       await session.save();
 
       res.status(200).json({ message: "Login successful" });
-    } catch (error:any) {
+    } catch (error: any) {
       res.status(401).json({ message: error.message });
     }
   } else {

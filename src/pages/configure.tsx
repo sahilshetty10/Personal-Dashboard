@@ -29,8 +29,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  console.log(user);
-
   return {
     props: {
       user,
@@ -93,7 +91,6 @@ const Configure = ({ user }: any) => {
       holidayCountry,
       weatherLocation,
     };
-    console.log(updatedPreferences);
 
     try {
       // Refresh the session with the updated preferences
@@ -115,7 +112,7 @@ const Configure = ({ user }: any) => {
   return (
     <>
       <Navbar name={user.name} profileImage={user.profileImage} />
-      <main className="px-8 xl:px-16 border m-8 xl:m-16 grid grid-cols-3 gap-8 grid-rows-3 bg-background py-8">
+      <main className="px-8 xl:px-16 border m-8 xl:m-16 grid xl:grid-cols-3 gap-8 xl:grid-rows-3 bg-background py-8">
         <h1 className="bg-background col-span-3 text-6xl flex justify-center items-center">
           Customize Your Dashboard
         </h1>

@@ -60,11 +60,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const Home = ({ user }: any) => {
   return (
-    <div>
+    <div className="h-screen w-screen flex flex-col">
       <Navbar name={user.name} profileImage={user.profileImage} />
-      <main className="px-8 xl:px-16 flex-1 overflow-auto pt-4 pb-20">
+      <main className="px-8 xl:px-16 flex-1 pt-4 pb-20 xl:overflow-auto">
         <Stock data={user.stockData} />
-        <section className="grid grid-cols-4 grid-rows-5 h-full gap-8 overflow-hidden py-8">
+        <section className="grid xl:grid-cols-4 xl:grid-rows-5 xl:h-full gap-8 xl:overflow-hidden py-8">
           <News data={user.newsData} />
           <ChatBox />
           <Holiday data={user.holidayData} />

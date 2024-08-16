@@ -10,7 +10,10 @@ import {
 const stock = ({ data }: any) => {
   return (
     <>
-      <section className=" col-span-1 row-span-1 grid xl:grid-cols-3 gap-4">
+      <section
+        className=" col-span-1 row-span-1 grid xl:grid-cols-3 gap-4"
+        id="stocks-container"
+      >
         {Object.keys(data).map((key, index) => (
           <Card className="flex items-center justify-between" key={index}>
             <CardHeader>

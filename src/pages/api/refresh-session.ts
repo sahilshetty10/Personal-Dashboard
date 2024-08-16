@@ -39,6 +39,7 @@ export default async function refreshSession(
 
     // Update preferences in session
     session.user.preferences = preferences;
+    console.log(session.user);
     await session.save();
 
     res.status(200).json({ message: "Preferences updated" });
