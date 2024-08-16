@@ -68,11 +68,11 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <main className="w-1/2 m-auto h-[90vh] flex items-center justify-center">
+      <main className="xl:w-1/2 m-auto xl:h-[90vh] flex items-center justify-center p-8">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 w-1/2 bg-background p-8"
+            className="space-y-8 xl:w-1/2 bg-background p-8"
           >
             <FormField
               control={form.control}
