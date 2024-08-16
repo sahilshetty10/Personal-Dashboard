@@ -68,6 +68,7 @@ export default async function signupHandler(
           newsCategory: "business",
           newsCountry: "us",
           holidayCountry: "us",
+          weatherLocation: "43.78037896265309, -79.3025878249896",
         },
       };
       await session.save();

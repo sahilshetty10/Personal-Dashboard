@@ -15,16 +15,19 @@ const stock = ({ data }: any) => {
         id="stocks-container"
       >
         {Object.keys(data).map((key, index) => (
-          <Card className="flex items-center justify-between" key={index}>
-            <CardHeader>
-              <CardTitle>{key}</CardTitle>
+          <Card
+            className="flex items-center justify-between max-w-full"
+            key={index}
+          >
+            <CardHeader className="flex-1">
+              <CardTitle className="truncate text-base">{key}</CardTitle>
             </CardHeader>
             <CardContent className="flex gap-4 items-center h-full px-4 py-0">
-              <CardDescription className="text-base xl:text-lg font-semibold text-inherit">
+              <CardDescription className="text-base xl:text-lg font-semibold text-inherit min-w-fit">
                 $ {data[key].usd.toFixed(2)}
               </CardDescription>
               <CardDescription
-                className="text-xs xl:text-base"
+                className="text-xs xl:text-base min-w-fit"
                 style={
                   data[key].usd_24h_change > 0
                     ? { color: "green" }
