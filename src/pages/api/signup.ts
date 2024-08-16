@@ -51,7 +51,8 @@ export default async function signupHandler(
           newsCategory: "business",
           newsCountry: "us",
           holidayCountry: "us",
-        }, // Empty preferences by default
+          weatherLocation: "43.78037896265309, -79.3025878249896",
+        },
       });
 
       // Set session
