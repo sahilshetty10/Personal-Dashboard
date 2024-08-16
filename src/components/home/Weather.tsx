@@ -72,7 +72,7 @@ const Weather = ({ data }: any) => {
             {data.current.temp_c} &#8451;
           </CardDescription>
           <div className="flex items-center justify-center flex-col">
-            <Image
+            <img
               src={data.current.condition.icon}
               alt={data.current.condition.text}
             />
