@@ -36,7 +36,7 @@ const ConfigStock = () => {
 
   return (
     <>
-      <Card className="row-span-2">
+      <Card className="xl:row-span-2">
         <CardHeader>
           <CardTitle>Stock Configuration</CardTitle>
         </CardHeader>

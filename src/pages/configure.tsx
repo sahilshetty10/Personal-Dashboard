@@ -111,19 +111,21 @@ const Configure = ({ user }: any) => {
 
   return (
     <>
-      <Navbar name={user.name} profileImage={user.profileImage} />
-      <main className="px-8 xl:px-16 border m-8 xl:m-16 grid xl:grid-cols-3 gap-8 xl:grid-rows-3 bg-background py-8">
-        <h1 className="bg-background col-span-3 text-6xl flex justify-center items-center">
-          Customize Your Dashboard
-        </h1>
-        <ConfigStock />
-        <ConfigNews />
-        <ConfigHoliday />
-        <ConfigWeather />
-        <Button className="col-start-2 w-fit m-auto" onClick={saveChanges}>
-          Save Changes
-        </Button>
-      </main>
+      <div className="h-screen w-screen flex flex-col">
+        <Navbar name={user.name} profileImage={user.profileImage} />
+        <main className="px-8 xl:px-16 border m-8 xl:m-16 grid xl:grid-cols-3 gap-8 xl:grid-rows-3 bg-background py-8">
+          <h1 className="bg-background text-2xl font-bold text-center xl:col-span-3 xl:text-6xl flex justify-center items-center">
+            Customize Your Dashboard
+          </h1>
+          <ConfigStock />
+          <ConfigNews />
+          <ConfigHoliday />
+          <ConfigWeather />
+          <Button className="xl:col-start-2 w-fit m-auto" onClick={saveChanges}>
+            Save Changes
+          </Button>
+        </main>
+      </div>
     </>
   );
 };

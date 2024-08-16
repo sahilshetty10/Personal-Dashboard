@@ -14,7 +14,7 @@ const Holiday = ({ data }: any) => {
   const day = date.getDate();
   const holidayName = holiday.name;
   return (
-    <section className="row-span-2 col-span-1 h-full">
+    <section className="xl:row-span-2 xl:col-span-1 h-full">
       <Card className="flex flex-col justify-center items-center h-full">
         <CardHeader>
           <CardTitle>Upcoming Holidays</CardTitle>

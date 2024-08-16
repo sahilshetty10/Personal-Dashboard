@@ -77,7 +77,7 @@ const ChatBox = () => {
 
   if (!canChat) {
     return (
-      <section className="col-span-2 row-span-3 h-full">
+      <section className="xl:col-span-2 xl:row-span-3 h-full">
         <Card className="h-full flex flex-col gap-4 justify-center items-center">
           <CardHeader>
             <CardTitle>Chat</CardTitle>
@@ -93,7 +93,7 @@ const ChatBox = () => {
     );
   } else {
     return (
-      <section className="col-span-2 row-span-3 h-full">
+      <section className="xl:col-span-2 xl:row-span-3 h-full">
         <Card className="h-full flex flex-col gap-4 justify-between overflow-auto">
           <CardHeader>
             <CardTitle>Chat</CardTitle>

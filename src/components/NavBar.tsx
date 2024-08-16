@@ -22,13 +22,10 @@ const Navbar = ({ name, profileImage }: any) => {
     <header className="px-8 xl:px-16 pt-4">
       <nav className="flex items-center bg-background justify-between font-bold border px-8 h-20 rounded-xl">
         <Link href="/">
-          <h1 className="cursor-pointer text-3xl">DashboardZen</h1>
+          <h1 className="cursor-pointer xl:text-3xl text-xl">DashboardZen</h1>
         </Link>
         <ul className="flex gap-8 items-center">
-          <Link href="/">
-            <li className="cursor-pointer hidden xl:block">Home</li>
-          </Link>
-          <Link href="/configure">
+          <Link href="/configure" className="hidden xl:block">
             <li className="cursor-pointer">Configure</li>
           </Link>
           <DropdownMenu>
@@ -44,6 +41,11 @@ const Navbar = ({ name, profileImage }: any) => {
             <DropdownMenuContent>
               <DropdownMenuLabel>{name}</DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <Link className="xl:hidden" href="/configure">
+                  Configure
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={handleLogout}

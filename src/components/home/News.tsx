@@ -11,7 +11,7 @@ import Link from "next/link";
 const news = ({ data }: any) => {
   const articles = data.articles;
   return (
-    <section className="col-span-2 row-span-5 h-full">
+    <section className="xl:col-span-2 xl:row-span-5 h-full">
       <Card className="h-full flex flex-col">
         <CardHeader>
           <CardTitle>News</CardTitle>
@@ -21,7 +21,7 @@ const news = ({ data }: any) => {
             <Link href={article.url} key={index}>
               <Card className="border-x-0 mb-4">
                 <CardHeader>
-                  <CardTitle>{article.title}</CardTitle>
+                  <CardTitle className="text-lg">{article.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>{article.description}</CardDescription>

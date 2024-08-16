@@ -2,11 +2,9 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Image from "next/image";
 
 const data = {
   weatherData: {
@@ -60,7 +58,7 @@ const data = {
 
 const Weather = ({ data }: any) => {
   return (
-    <section className="row-span-2 col-span-1">
+    <section className="xl:row-span-2 xl:col-span-1">
       <Card className="flex items-center justify-center flex-col h-full">
         <CardHeader>
           <CardTitle>

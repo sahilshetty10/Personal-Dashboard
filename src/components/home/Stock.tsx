@@ -11,7 +11,7 @@ const stock = ({ data }: any) => {
   return (
     <>
       <section
-        className=" col-span-1 row-span-1 grid xl:grid-cols-3 gap-4"
+        className="xl:col-span-1 xl:row-span-1 grid xl:grid-cols-3 gap-4"
         id="stocks-container"
       >
         {Object.keys(data).map((key, index) => (
@@ -20,10 +20,17 @@ const stock = ({ data }: any) => {
               <CardTitle>{key}</CardTitle>
             </CardHeader>
             <CardContent className="flex gap-4 items-center h-full px-4 py-0">
-              <CardDescription className="text-lg font-bold">
+              <CardDescription className="text-base xl:text-lg font-semibold text-inherit">
                 $ {data[key].usd.toFixed(2)}
               </CardDescription>
-              <CardDescription>
+              <CardDescription
+                className="text-xs xl:text-base"
+                style={
+                  data[key].usd_24h_change > 0
+                    ? { color: "green" }
+                    : { color: "red" }
+                }
+              >
                 {data[key].usd_24h_change.toFixed(2)}%
               </CardDescription>
             </CardContent>

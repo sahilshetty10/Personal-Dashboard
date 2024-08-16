@@ -82,7 +82,7 @@ const ConfigNews = () => {
   ];
   return (
     <>
-      <Card className="row-span-2 h-fit">
+      <Card className="xl:row-span-2 h-fit">
         <CardHeader>
           <CardTitle>News Configuration</CardTitle>
         </CardHeader>
