@@ -50,7 +50,44 @@ const Signup = () => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+      const file = e.target.files[0];
+
+      if (file.size > 500000) {
+        // Check if file size is over 1MB
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = new Image();
+          img.src = reader.result as string;
+
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            if (ctx) {
+              const maxWidth = 800; // Set a maximum width for the image
+              const scaleSize = maxWidth / img.width;
+              canvas.width = maxWidth;
+              canvas.height = img.height * scaleSize;
+
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+              canvas.toBlob((blob) => {
+                if (blob && blob.size <= 1000000) {
+                  setImage(new File([blob], file.name, { type: file.type }));
+                } else {
+                  form.setError("name", {
+                    type: "manual",
+                    message: "Compressed image size is still over 1MB.",
+                  });
+                }
+              }, file.type);
+            }
+          };
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setImage(file); // Set the image directly if it's already under 1MB
+      }
     }
   };
 
