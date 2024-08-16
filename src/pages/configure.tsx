@@ -4,9 +4,7 @@ import ConfigStock from "@/components/config/ConfigStock";
 import ConfigWeather from "@/components/config/ConfigWeather";
 import Navbar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { useEffect, useState } from "react";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { useEffect } from "react";
 import { getIronSession } from "iron-session";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -40,9 +38,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const configure = ({ user }: any) => {
+const Configure = ({ user }: any) => {
   const router = useRouter();
-
   useEffect(() => {
     if (!user) {
       window.location.href = "/login";
@@ -134,4 +131,4 @@ const configure = ({ user }: any) => {
   );
 };
 
-export default configure;
+export default Configure;

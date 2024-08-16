@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import Navbar from "@/components/NavBar";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
@@ -107,10 +108,10 @@ const Login = () => {
               {loading ? "Logging in..." : "Login"}
             </Button>
             <p>
-              Don't have an account?{" "}
-              <a href="/signup" className="text-blue-600">
+              {"Don't have an account? "}
+              <Link href="/signup" className="text-blue-600">
                 Sign up
-              </a>
+              </Link>
             </p>
           </form>
         </Form>

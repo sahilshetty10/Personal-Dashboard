@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Image from "next/image";
 
 const data = {
   weatherData: {
@@ -71,7 +72,7 @@ const Weather = ({ data }: any) => {
             {data.current.temp_c} &#8451;
           </CardDescription>
           <div className="flex items-center justify-center flex-col">
-            <img
+            <Image
               src={data.current.condition.icon}
               alt={data.current.condition.text}
             />
